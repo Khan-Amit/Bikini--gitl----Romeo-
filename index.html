@@ -1,225 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chasing Romeo · Medussa</title>
+    <title>CHASING ROMEO - Web Edition</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #0a0000;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            overflow: hidden;
-        }
-        .container {
-            text-align: center;
-            padding: 20px;
-            max-width: 700px;
-            width: 100%;
-        }
-        .title {
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: #ff1a1a;
-            text-shadow: 0 0 40px rgba(255, 0, 0, 0.4), 0 0 80px rgba(255, 0, 0, 0.2);
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #ff6666;
-            font-size: 1rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-            font-weight: 300;
-        }
-        .icons-row {
-            font-size: 5rem;
-            line-height: 1.6;
-            letter-spacing: 12px;
-            margin: 30px 0;
-            filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.3));
-        }
-        .icons-row span {
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-        .icons-row span:hover {
-            transform: scale(1.2);
-        }
-        .divider {
-            font-size: 2rem;
-            color: #ff1a1a;
-            letter-spacing: 8px;
-            margin: 20px 0 35px;
-            opacity: 0.6;
-            font-weight: 300;
-        }
-        .enter-btn {
-            display: inline-block;
-            background: transparent;
-            border: 2px solid #ff1a1a;
-            color: #ff1a1a;
-            padding: 18px 60px;
-            font-size: 1.6rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: all 0.4s ease;
-            text-decoration: none;
-            background: rgba(255, 0, 0, 0.05);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
-        }
-        .enter-btn:hover {
-            background: #ff1a1a;
-            color: #0a0000;
-            box-shadow: 0 0 60px rgba(255, 0, 0, 0.4);
-            transform: scale(1.05);
-        }
-        .footer {
-            margin-top: 40px;
-            color: #441111;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            border-top: 1px solid #1a0505;
-            padding-top: 20px;
-        }
-        .footer strong {
-            color: #882222;
-        }
-        /* Pulse animation for icons */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        .pulse {
-            animation: pulse 2.5s ease-in-out infinite;
-        }
-        /* Particle background */
-        .bg-particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #ff1a1a;
-            border-radius: 50%;
-            opacity: 0.15;
-            animation: float linear infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.2; }
-            90% { opacity: 0.2; }
-            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
-        }
-        /* Responsive */
-        @media (max-width: 600px) {
-            .title { font-size: 2.5rem; }
-            .icons-row { font-size: 3.5rem; letter-spacing: 8px; }
-            .enter-btn { padding: 14px 40px; font-size: 1.2rem; }
-            .divider { font-size: 1.4rem; }
-        }
-        @media (max-width: 400px) {
-            .title { font-size: 2rem; }
-            .icons-row { font-size: 2.8rem; letter-spacing: 4px; }
-            .enter-btn { padding: 12px 30px; font-size: 1rem; }
-        }
+        body { margin: 0; background: black; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        canvas { border: 1px solid #00FFCC; }
+        #info { position: absolute; bottom: 20px; color: #00FFCC; font-family: monospace; font-size: 14px; text-align: center; width: 100%; }
     </style>
 </head>
 <body>
-
-    <!-- Background Particles -->
-    <div class="bg-particles" id="particles"></div>
-
-    <div class="container">
-        <!-- Title -->
-        <div class="title">CHASING ROMEO</div>
-        <div class="subtitle">✦ Medussa Game ✦</div>
-
-        <!-- Big Icons Row -->
-        <div class="icons-row pulse">
-            <span>💋</span>
-            <span>👀</span>
-            <span>👁️</span>
-            <span>🤾</span>
-            <span>🤸</span>
-            <span>👙</span>
-            <span>👙</span>
-            <span>🩱</span>
-        </div>
-
-        <!-- Divider -->
-        <div class="divider">__________&amp;&amp;</div>
-
-        <!-- Enter Game Button -->
-        <a href="#" class="enter-btn" onclick="enterGame()">▶ ENTER GAME</a>
-
-        <!-- Footer -->
-        <div class="footer">
-            Designed by <strong>Seliim Ahmed</strong> · © 2026 · All Rights Reserved
-        </div>
-    </div>
-
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="info">WASD to move • SPACE to shift colors • Refresh to reset</div>
     <script>
-        // ============================================================
-        // ENTER GAME FUNCTION
-        // ============================================================
-        function enterGame() {
-            // Launch the game window (replace with actual game path)
-            // For now, open a new tab with the game or start the game loop
-            alert('🚀 Launching Chasing Romeo...\n\nMake sure the game is running.\nIf not, run: python3 ChasingRomeo.py');
-            // In production, you would redirect to the game page:
-            // window.location.href = 'game.html';
-            // Or open a new window with the game:
-            // window.open('game.html', '_blank');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Game state
+        let triX = 400, triY = 300;
+        let angle = 0, colorShift = 0;
+
+        // Keyboard input
+        const keys = { w: false, a: false, s: false, d: false, space: false };
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ') { e.preventDefault(); keys.space = true; }
+            else if (e.key === 'w' || e.key === 'W') keys.w = true;
+            else if (e.key === 's' || e.key === 'S') keys.s = true;
+            else if (e.key === 'a' || e.key === 'A') keys.a = true;
+            else if (e.key === 'd' || e.key === 'D') keys.d = true;
+        });
+        document.addEventListener('keyup', (e) => {
+            if (e.key === ' ') { keys.space = false; }
+            else if (e.key === 'w' || e.key === 'W') keys.w = false;
+            else if (e.key === 's' || e.key === 'S') keys.s = false;
+            else if (e.key === 'a' || e.key === 'A') keys.a = false;
+            else if (e.key === 'd' || e.key === 'D') keys.d = false;
+        });
+
+        function gameLoop() {
+            // --- Update ---
+            angle += 0.05;
+            if (keys.w) triY -= 4;
+            if (keys.s) triY += 4;
+            if (keys.a) triX -= 4;
+            if (keys.d) triX += 4;
+            if (keys.space) colorShift += 3;
+
+            // Clamp position
+            triX = Math.max(50, Math.min(750, triX));
+            triY = Math.max(50, Math.min(550, triY));
+
+            // --- Draw ---
+            ctx.clearRect(0, 0, 800, 600);
+
+            // Dynamic color (rainbow)
+            const r = 127 + 127 * Math.sin(angle + colorShift * 0.02);
+            const g = 127 + 127 * Math.sin(angle + 2 + colorShift * 0.02);
+            const b = 127 + 127 * Math.sin(angle + 4 + colorShift * 0.02);
+            const color = `rgb(${Math.floor(r)},${Math.floor(g)},${Math.floor(b)})`;
+
+            // Rotating triangle
+            const size = 50 + 10 * Math.sin(angle * 0.5);
+            const x = triX, y = triY;
+            const pts = [
+                x, y - size,
+                x - size * 0.8, y + size * 0.6,
+                x + size * 0.8, y + size * 0.6
+            ];
+
+            ctx.beginPath();
+            ctx.moveTo(pts[0], pts[1]);
+            ctx.lineTo(pts[2], pts[3]);
+            ctx.lineTo(pts[4], pts[5]);
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // HUD
+            ctx.fillStyle = '#00FFCC';
+            ctx.font = '14px monospace';
+            ctx.fillText(`Position: (${Math.floor(triX)}, ${Math.floor(triY)})`, 20, 30);
+            ctx.fillText(`Angle: ${(angle * 180 / Math.PI).toFixed(0)}°`, 20, 50);
+
+            requestAnimationFrame(gameLoop);
         }
 
-        // ============================================================
-        // BACKGROUND PARTICLES
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('particles');
-            const count = 60;
-            for (let i = 0; i < count; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.width = (2 + Math.random() * 4) + 'px';
-                p.style.height = p.style.width;
-                p.style.animationDuration = (10 + Math.random() * 30) + 's';
-                p.style.animationDelay = (Math.random() * 30) + 's';
-                p.style.opacity = 0.05 + Math.random() * 0.15;
-                container.appendChild(p);
-            }
-        });
-
-        // ============================================================
-        // KEYBOARD SHORTCUT: Press Enter to launch game
-        // ============================================================
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                enterGame();
-            }
-        });
+        // Start the loop
+        gameLoop();
     </script>
 </body>
 </html>
