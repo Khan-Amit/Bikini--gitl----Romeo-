@@ -2,21 +2,27 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>My Video Player</title>
+    <title>TITM Player Suite</title>
     <style>
-        body { background: #111; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; flex-direction: column; font-family: Arial, sans-serif; }
-        video { max-width: 90%; max-height: 80vh; background: #000; border: 2px solid #00FFCC; border-radius: 8px; }
-        .controls { margin-top: 15px; color: #fff; }
-        a { color: #00FFCC; text-decoration: none; }
+        body { background: #0a0a0a; color: #00FFCC; font-family: monospace; text-align: center; padding: 20px; }
+        video { max-width: 90%; max-height: 70vh; border: 2px solid #00FFCC; }
+        .downloads { margin-top: 30px; }
+        a { display: inline-block; margin: 10px; padding: 10px 20px; background: #00FFCC; color: #000; text-decoration: none; border-radius: 5px; }
     </style>
 </head>
 <body>
-    <video controls autoplay loop>
+    <h1>TITM Player Suite</h1>
+    <video controls autoplay>
         <source src="YOUR_VIDEO_FILENAME.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+        Your browser doesn't support video.
     </video>
-    <div class="controls">
-        <p>📁 <a href="YOUR_VIDEO_FILENAME.mp4" download>Download this video</a></p>
+    <div class="downloads">
+        <h3>Download Players (Windows EXE)</h3>
+        <a href="VideoPlayer.exe">🎬 Video Player</a>
+        <a href="ImagePlayer.exe">🖼️ Image Player</a>
+        <a href="EmojiPlayer.exe">😊 Emoji Player</a>
+        <a href="SequencePlayer.exe">🔢 Sequence Player</a>
     </div>
+    <p style="margin-top: 40px; color: #888;">Click any EXE to download – then run it on your PC.</p>
 </body>
 </html>
