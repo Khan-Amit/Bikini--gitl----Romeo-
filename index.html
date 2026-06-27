@@ -5,7 +5,7 @@
     <title>TITM Player Suite</title>
     <style>
         body { background: #0a0a0a; color: #00FFCC; font-family: monospace; text-align: center; padding: 20px; }
-        video { max-width: 90%; max-height: 70vh; border: 2px solid #00FFCC; border-radius: 8px; }
+        video { max-width: 90%; max-height: 70vh; border: 2px solid #00FFCC; border-radius: 8px; background: #000; }
         .downloads { margin-top: 30px; }
         a { display: inline-block; margin: 10px; padding: 10px 20px; background: #00FFCC; color: #000; text-decoration: none; border-radius: 5px; font-weight: bold; }
         a:hover { background: #33FFAA; }
@@ -14,7 +14,7 @@
 </head>
 <body>
     <h1>🎬 TITM Player Suite</h1>
-    <video controls autoplay>
+    <video controls autoplay muted playsinline>
         <source src="FB_VID_5295591420014809963.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
@@ -28,6 +28,6 @@
     <p style="margin-top: 30px; color: #888;">
         Just download the EXE and double‑click to run – no installation required.
     </p>
-    <p style="color: #555;">💡 All players support play/pause, zoom, pan, and drag‑and‑drop.</p>
+    <p style="color: #555;">💡 Video autoplays muted – click the speaker icon to unmute.</p>
 </body>
 </html>
