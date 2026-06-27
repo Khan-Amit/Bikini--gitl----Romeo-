@@ -22,3 +22,9 @@ Use MinGW (g++):
 
 ```bash
 g++ -o ImagePlayer.exe ImagePlayer.cpp -lgdi32 -lgdiplus -lshell32 -lole32 -mwindows
+
+
+
+---
+
+### 📄 `LICENSE`
