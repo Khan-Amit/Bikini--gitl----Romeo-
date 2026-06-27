@@ -2,26 +2,31 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>CHASING ROMEO - Web Edition</title>
+    <title>9D Fractal Gouraud Shader – Chasing Romeo</title>
     <style>
-        body { margin: 0; background: black; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        canvas { border: 1px solid #00FFCC; }
-        #info { position: absolute; bottom: 20px; color: #00FFCC; font-family: monospace; font-size: 14px; text-align: center; width: 100%; }
+        body { margin: 0; background: #111; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
+        canvas { border: 1px solid #00FFCC; background: #000; cursor: pointer; }
+        #info { color: #33FF33; font: 12px monospace; margin-top: 10px; text-align: center; width: 600px; }
+        #controls { color: #888; font: 11px monospace; margin-top: 6px; }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <div id="info">WASD to move • SPACE to shift colors • Refresh to reset</div>
+    <canvas id="c" width="600" height="450"></canvas>
+    <div id="info">Loading...</div>
+    <div id="controls">WASD to move • SPACE to shift colors</div>
     <script>
-        const canvas = document.getElementById('gameCanvas');
+        const canvas = document.getElementById('c');
         const ctx = canvas.getContext('2d');
+        const info = document.getElementById('info');
 
-        // Game state
-        let triX = 400, triY = 300;
-        let angle = 0, colorShift = 0;
+        // --- TITM Pipeline ---
+        let alpha = -0.5, beta = 0.0, gamma = 0.866;
+        let time = 0;
 
-        // Keyboard input
+        // Game object position
+        let triX = 300, triY = 225;
         const keys = { w: false, a: false, s: false, d: false, space: false };
+
         document.addEventListener('keydown', (e) => {
             if (e.key === ' ') { e.preventDefault(); keys.space = true; }
             else if (e.key === 'w' || e.key === 'W') keys.w = true;
@@ -30,66 +35,94 @@
             else if (e.key === 'd' || e.key === 'D') keys.d = true;
         });
         document.addEventListener('keyup', (e) => {
-            if (e.key === ' ') { keys.space = false; }
+            if (e.key === ' ') keys.space = false;
             else if (e.key === 'w' || e.key === 'W') keys.w = false;
             else if (e.key === 's' || e.key === 'S') keys.s = false;
             else if (e.key === 'a' || e.key === 'A') keys.a = false;
             else if (e.key === 'd' || e.key === 'D') keys.d = false;
         });
 
-        function gameLoop() {
-            // --- Update ---
-            angle += 0.05;
-            if (keys.w) triY -= 4;
-            if (keys.s) triY += 4;
-            if (keys.a) triX -= 4;
-            if (keys.d) triX += 4;
-            if (keys.space) colorShift += 3;
-
-            // Clamp position
-            triX = Math.max(50, Math.min(750, triX));
-            triY = Math.max(50, Math.min(550, triY));
-
-            // --- Draw ---
-            ctx.clearRect(0, 0, 800, 600);
-
-            // Dynamic color (rainbow)
-            const r = 127 + 127 * Math.sin(angle + colorShift * 0.02);
-            const g = 127 + 127 * Math.sin(angle + 2 + colorShift * 0.02);
-            const b = 127 + 127 * Math.sin(angle + 4 + colorShift * 0.02);
-            const color = `rgb(${Math.floor(r)},${Math.floor(g)},${Math.floor(b)})`;
-
-            // Rotating triangle
-            const size = 50 + 10 * Math.sin(angle * 0.5);
-            const x = triX, y = triY;
-            const pts = [
-                x, y - size,
-                x - size * 0.8, y + size * 0.6,
-                x + size * 0.8, y + size * 0.6
-            ];
-
-            ctx.beginPath();
-            ctx.moveTo(pts[0], pts[1]);
-            ctx.lineTo(pts[2], pts[3]);
-            ctx.lineTo(pts[4], pts[5]);
-            ctx.closePath();
-            ctx.fillStyle = color;
-            ctx.fill();
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // HUD
-            ctx.fillStyle = '#00FFCC';
-            ctx.font = '14px monospace';
-            ctx.fillText(`Position: (${Math.floor(triX)}, ${Math.floor(triY)})`, 20, 30);
-            ctx.fillText(`Angle: ${(angle * 180 / Math.PI).toFixed(0)}°`, 20, 50);
-
-            requestAnimationFrame(gameLoop);
+        function updateVectors() {
+            time += 0.05;
+            alpha = Math.sin(time);
+            beta = 0.2 * Math.cos(time * 0.5);
+            gamma = Math.cos(time);
         }
 
-        // Start the loop
-        gameLoop();
+        function fractalStep(linear) {
+            if (linear <= 0) return 0;
+            if (linear >= 1) return 1;
+            const folding = 2.718;
+            const hausdorff = 9.0 + (Math.log(folding) / Math.log(3.0));
+            return Math.pow(linear, hausdorff / 9.0);
+        }
+
+        function interpolateColor(c1, c2, factor) {
+            const f = fractalStep(factor);
+            let r = Math.round(c1[0] + (c2[0] - c1[0]) * f);
+            let g = Math.round(c1[1] + (c2[1] - c1[1]) * f);
+            let b = Math.round(c1[2] + (c2[2] - c1[2]) * f);
+            return [Math.min(255, Math.max(0, r)), Math.min(255, Math.max(0, g)), Math.min(255, Math.max(0, b))];
+        }
+
+        function draw() {
+            // --- Movement ---
+            if (keys.w) triY -= 3;
+            if (keys.s) triY += 3;
+            if (keys.a) triX -= 3;
+            if (keys.d) triX += 3;
+            if (keys.space) time += 0.2;
+            triX = Math.min(550, Math.max(50, triX));
+            triY = Math.min(400, Math.max(50, triY));
+
+            updateVectors();
+
+            const cx = triX, cy = triY;
+            const size = 100;
+            const v1 = { x: cx, y: cy - size, col: [Math.abs(alpha) * 255, 50, 200] };
+            const v2 = { x: cx - 120, y: cy + 70, col: [50, Math.abs(beta) * 255, 255] };
+            const v3 = { x: cx + 120, y: cy + 70, col: [200, 255, Math.abs(gamma) * 255] };
+
+            ctx.clearRect(0, 0, 600, 450);
+
+            const steps = 40;
+            for (let s = 0; s <= steps; s++) {
+                const t = s / steps;
+                const lx = v1.x + (v2.x - v1.x) * t;
+                const ly = v1.y + (v2.y - v1.y) * t;
+                const lcol = interpolateColor(v1.col, v2.col, t);
+                const rx = v1.x + (v3.x - v1.x) * t;
+                const ry = v1.y + (v3.y - v1.y) * t;
+                const rcol = interpolateColor(v1.col, v3.col, t);
+
+                const stepsH = 30;
+                for (let h = 0; h <= stepsH; h++) {
+                    const u = h / stepsH;
+                    const px = lx + (rx - lx) * u;
+                    const py = ly + (ry - ly) * u;
+                    const col = interpolateColor(lcol, rcol, u);
+                    ctx.fillStyle = `rgb(${col[0]},${col[1]},${col[2]})`;
+                    ctx.fillRect(px, py, 2, 2);
+                }
+            }
+
+            ctx.strokeStyle = '#00FFCC';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(v1.x, v1.y);
+            ctx.lineTo(v2.x, v2.y);
+            ctx.lineTo(v3.x, v3.y);
+            ctx.closePath();
+            ctx.stroke();
+
+            info.innerHTML = `
+                Alpha: ${alpha.toFixed(2)} | Beta: ${beta.toFixed(2)} | Gamma: ${gamma.toFixed(2)}<br>
+                9D Fractal • Gouraud Shading • 39‑Bias Harmonic
+            `;
+            requestAnimationFrame(draw);
+        }
+
+        draw();
     </script>
 </body>
 </html>
