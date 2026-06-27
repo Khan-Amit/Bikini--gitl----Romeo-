@@ -2,73 +2,61 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TITM Console Matrix</title>
+<title>TITM Matrix</title>
 <style>
-body { background:#0a0a0a; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; flex-direction:column; font-family:'Courier New',monospace; }
-#container { background:#111; border:2px solid #00FFCC; padding:10px; }
-canvas { display:block; background:#000; }
-#telemetry { color:#33FF33; font-size:12px; margin-top:10px; text-align:center; width:100%; max-width:800px; border-top:1px solid #00FFCC; padding-top:8px; }
+body{background:#0a0a0a;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;flex-direction:column;font-family:'Courier New',monospace}
+#container{background:#111;border:2px solid #00FFCC;padding:10px}
+canvas{display:block;background:#000}
+#telemetry{color:#33FF33;font-size:12px;margin-top:10px;text-align:center;max-width:800px}
 </style>
 </head>
 <body>
-<div id="container">
-    <canvas id="c" width="800" height="300"></canvas>
-</div>
-<div id="telemetry">
-    TITM MATRIX GENERATOR | Architect: Seliim Ahmed | amit.khanna.1082@gmail.com<br>
-    Telemetry Status: ACTIVE | Node Pathways: 39/39 Coherent | Threshold: 9D FRACTAL
-</div>
+<div id="container"><canvas id="c" width="800" height="300"></canvas></div>
+<div id="telemetry">TITM MATRIX GENERATOR | Architect: Seliim Ahmed | amit.khanna.1082@gmail.com<br>Telemetry Status: ACTIVE | Node Pathways: 39/39 Coherent | Threshold: 9D FRACTAL</div>
 <script>
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
-const W=800, H=300, CHAR_W=10, CHAR_H=12;
-let angle=0;
-function drawChar(gx,gy,symbol,color='#00FFCC'){
-    ctx.fillStyle=color;
-    ctx.font=`${CHAR_H-2}px 'Courier New', monospace`;
-    ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(symbol, gx*CHAR_W+CHAR_W/2, gy*CHAR_H+CHAR_H/2);
+const canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
+const W=800,H=300,CH=10,CW=12; let angle=0;
+function drawChar(gx,gy,s,color='#00FFCC'){
+ ctx.fillStyle=color; ctx.font=`${CW-2}px 'Courier New',monospace`;
+ ctx.textAlign='center'; ctx.textBaseline='middle';
+ ctx.fillText(s, gx*CH+CH/2, gy*CW+CW/2);
 }
 function render(){
-    angle+=0.05;
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
-    const cols=80, rows=30, cx=cols/2, cy=rows/2;
-    // Core arms
-    for(let i=0;i<3;i++){
-        const a=angle+(i*2*Math.PI/3);
-        for(let r=0;r<5;r++){
-            const gx=cx+r*2*Math.cos(a), gy=cy+r*0.9*Math.sin(a);
-            drawChar(gx,gy,(r===4)?'X':'*',(r===4)?'#FF4444':'#00FFCC');
-        }
-    }
-    // 3x3 grid
-    const sp=6;
-    for(let row=-1;row<=1;row++) for(let col=-1;col<=1;col++){
-        let lx=col*sp, ly=row*(sp/2);
-        const rx=cx+lx*Math.cos(angle*0.3)-ly*Math.sin(angle*0.3)*2;
-        const ry=cy+lx*Math.sin(angle*0.3)*0.5+ly*Math.cos(angle*0.3);
-        if(rx>=0&&rx<cols&&ry>=0&&ry<rows){
-            drawChar(rx,ry,'#','#88FF88');
-            drawChar(rx-1,ry,'|','#88FF88');
-            drawChar(rx+1,ry,'|','#88FF88');
-            drawChar(rx,ry-1,'-','#88FF88');
-            drawChar(rx,ry+1,'-','#88FF88');
-        }
-    }
-    // Outer ring
-    const nodes=27, rx=26, ry=11;
-    for(let i=0;i<nodes;i++){
-        const a=(i*2*Math.PI/nodes)-angle*0.2;
-        const breath=1+0.08*Math.sin(angle*1.5+i);
-        const nx=cx+rx*breath*Math.cos(a);
-        const ny=cy+ry*breath*Math.sin(a);
-        if(nx>=0&&nx<cols&&ny>=0&&ny<rows) drawChar(nx,ny,'@','#FFAA44');
-    }
-    ctx.fillStyle='#33FF33'; ctx.font='12px monospace';
-    ctx.fillText(`Angle: ${(angle*180/Math.PI).toFixed(0)}°`,10,20);
-    ctx.fillText('Continuous Baseline: 3 Tensors + 9 Planes + 27 Volumetric Vectors',10,35);
-    requestAnimationFrame(render);
+ angle+=0.05;
+ ctx.clearRect(0,0,W,H);
+ ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+ const cols=80, rows=30, cx=cols/2, cy=rows/2;
+ for(let i=0;i<3;i++){
+  const a=angle+(i*2*Math.PI/3);
+  for(let r=0;r<5;r++){
+   const gx=cx+r*2*Math.cos(a), gy=cy+r*0.9*Math.sin(a);
+   drawChar(gx,gy,(r===4)?'X':'*',(r===4)?'#FF4444':'#00FFCC');
+  }
+ }
+ const sp=6;
+ for(let row=-1;row<=1;row++) for(let col=-1;col<=1;col++){
+  let lx=col*sp, ly=row*(sp/2);
+  const rx=cx+lx*Math.cos(angle*0.3)-ly*Math.sin(angle*0.3)*2;
+  const ry=cy+lx*Math.sin(angle*0.3)*0.5+ly*Math.cos(angle*0.3);
+  if(rx>=0&&rx<cols&&ry>=0&&ry<rows){
+   drawChar(rx,ry,'#','#88FF88');
+   drawChar(rx-1,ry,'|','#88FF88');
+   drawChar(rx+1,ry,'|','#88FF88');
+   drawChar(rx,ry-1,'-','#88FF88');
+   drawChar(rx,ry+1,'-','#88FF88');
+  }
+ }
+ const nodes=27, rx=26, ry=11;
+ for(let i=0;i<nodes;i++){
+  const a=(i*2*Math.PI/nodes)-angle*0.2;
+  const breath=1+0.08*Math.sin(angle*1.5+i);
+  const nx=cx+rx*breath*Math.cos(a), ny=cy+ry*breath*Math.sin(a);
+  if(nx>=0&&nx<cols&&ny>=0&&ny<rows) drawChar(nx,ny,'@','#FFAA44');
+ }
+ ctx.fillStyle='#33FF33'; ctx.font='12px monospace';
+ ctx.fillText(`Angle: ${(angle*180/Math.PI).toFixed(0)}°`,10,20);
+ ctx.fillText('3 Tensors + 9 Planes + 27 Volumetric Vectors',10,35);
+ requestAnimationFrame(render);
 }
 render();
 </script>
