@@ -1,23 +1,23 @@
-### AL ###
-#Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
-.vscode/
-#Cache folder
-.alcache/
-#Symbols folder
-.alpackages/
-#Snapshots folder
-.snapshots/
-#Testing Output folder
-.output/
-#Extension App-file
-*.app
-#Rapid Application Development File
-rad.json
-#Translation Base-file
-*.g.xlf
-#License-files
-*.bclicense
-*.flf
-#Test results file
-TestResults.xml
+
+---
+
+### 🧩 Add Your Source Files
+
+Now put all your `.cpp` files (the ones we wrote together) into the same folder:
+
+- `SequencePlayer.cpp`
+- `EmojiPlayer.cpp`
+- `ImagePlayer.cpp`
+
+(You can also include `ChasingRomeo.cpp` if you have it.)
+
+---
+
+### 🚀 Push to GitHub
+
+```bash
+git init
+git add .
+git commit -m "Initial release"
+git remote add origin https://github.com/yourusername/your-repo-name.git
+git push -u origin main
